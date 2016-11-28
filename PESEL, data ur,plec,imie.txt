@@ -1,0 +1,42 @@
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;     
+
+        GregorianCalendar data_ur = (GregorianCalendar) Calendar.getInstance();
+        
+        int wiek = (int) (Math.random()*(60+1-20))+20; // wiek od 20 do 60
+        int miesiac = (int) (Math.random()*12);
+            
+        data_ur.roll(GregorianCalendar.YEAR, -wiek);   
+        data_ur.set(GregorianCalendar.MONTH, miesiac);
+        
+        int dzien = (int) (Math.random()*data_ur.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))+1;
+        data_ur.set(GregorianCalendar.DAY_OF_MONTH, dzien);
+            
+        int PESEL12 = (int) data_ur.get(GregorianCalendar.YEAR) % 100;
+        int PESEL34 = (int) (data_ur.get(GregorianCalendar.MONTH) + 1) + (((data_ur.get(GregorianCalendar.YEAR) / 100) - 19) * 20);
+
+        NumberFormat nf2 = NumberFormat.getIntegerInstance();
+        nf2.setMinimumIntegerDigits(2);
+        NumberFormat nf4 = NumberFormat.getIntegerInstance();
+        nf4.setMinimumIntegerDigits(4);
+        nf4.setGroupingUsed(false);
+        String PESEL = nf2.format(PESEL12) + nf2.format(PESEL34) + nf2.format(data_ur.get(GregorianCalendar.DAY_OF_MONTH)) + nf4.format((Math.random() * 10000));
+        
+        int[] wagi = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
+        int cyfra_kontrolna = 0;
+        for (int i = 0; i < 10; cyfra_kontrolna += wagi[i] * Character.getNumericValue(PESEL.charAt(i++)));
+        
+        cyfra_kontrolna %= 10;
+        cyfra_kontrolna = 10 - cyfra_kontrolna;
+        cyfra_kontrolna %= 10;
+          
+        PESEL = PESEL.concat(Integer.toString(cyfra_kontrolna));
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+        vars.put("PESEL", PESEL);
+        vars.put("DATA_UR", df.format(data_ur.getTime()));
+        vars.put("PLEC", Character.getNumericValue(PESEL.charAt(9)) % 2 == 0 ? "K" : "M");
+        vars.put("IMIE", Character.getNumericValue(PESEL.charAt(9)) % 2 == 0 ? "Janina" : "Jan");

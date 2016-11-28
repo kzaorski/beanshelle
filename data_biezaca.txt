@@ -1,0 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+vars.put("DATA_BIEZACA", df.format(new Date().getTime()));

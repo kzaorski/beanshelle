@@ -1,0 +1,24 @@
+import java.util.HashMap;
+import org.htmlparser.Parser;
+import org.htmlparser.Tag;
+import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.SimpleNodeIterator;
+
+HashMap listaParametrow = new HashMap();
+
+String str = prev.getResponseDataAsString();
+Parser p = new Parser(str);
+
+NodeList inputy = p.parse(new TagNameFilter("input"));
+SimpleNodeIterator i = inputy.elements();
+while (i.hasMoreNodes()){
+              Tag t = (Tag) i.nextNode();
+              //System.out.println(t.getAttribute("name") + " " + t.getAttribute("value")); 
+              listaParametrow.put(t.getAttribute("name"), t.getAttribute("value"));
+}
+
+vars.put("POLISA_DATA_PODPISU_WNIOSKU", listaParametrow.get("polisa__0__data_podpisu_wniosku"));
+vars.put("POLISA_KIEDY_ZMIENIAL", listaParametrow.get("polisa__0__kiedy_zmienial"));
+vars.put("POLISA_DATA_POCZ_ODP", listaParametrow.get("polisa_0_data_poczatku_odp"));
+vars.put("POLISA_DATA_KONC_ODP", listaParametrow.get("polisa__0__data_konca_odp"));
